@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import  input_data
 
-mnist = input_data.read_data_sets("MNIST_data/",one_hot=True)
+mnist = input_data.read_data_sets("data/",one_hot=True)
 
 """实现回归模型"""
 ## 通过操作符号变量来描述这些课交互的操作单元
