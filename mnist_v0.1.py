@@ -1,5 +1,6 @@
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import  input_data
+import os
 
 mnist = input_data.read_data_sets("data/",one_hot=True)
 
@@ -26,6 +27,14 @@ train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)
 #初始化创建的变量
 init = tf.global_variables_initializer()
 
+#模型保存
+saver = tf.train.Saver()
+model_name = "model.ckpt"
+model_dir = "%s" % ("test1") #将srcnn和label_size=21，组成一个srcnn_21的文件名
+checkpoint_dir = os.path.join('checkpoint', model_dir)
+if not os.path.exists(checkpoint_dir):
+    os.makedirs(checkpoint_dir)
+
 sess = tf.Session()
 sess.run(init)
 # 下面循环，随机抓取训练数据中的100个批处理数据点，用这些数据点作为参数替换之前的占位
@@ -35,6 +44,7 @@ for i in range(1000):
     batch_xs,batch_ys = mnist.train.next_batch(100)
     sess.run(train_step,feed_dict = {x:batch_xs, y_:batch_ys })
 
+saver.save(sess,os.path.join(checkpoint_dir, model_name))
 """评估模型"""
 
 # argmax 给出某个tensor对象在某一维数据上的器数据最大值所在的索引值
